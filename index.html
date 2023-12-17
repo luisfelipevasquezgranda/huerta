@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/style/navbar.css">
+    <link rel="stylesheet" href="/style/text.css">
+    <link rel="stylesheet" href="/style/about.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800;900&family=Poppins:wght@100&display=swap" rel="stylesheet">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -15,22 +17,127 @@
             <a href="#" class="logo">Logo</a>
             <label for="" class="menutoogle"> </label>
             <nav class="navbar">
-                <a href="#">Inicio</a>
-                <a href="#">nosotros</a>
-                <a href="#">Galeria</a>
-                <a href="#">Servicios</a>
-                <a href="#">Contactanos </a>
+                <a href="#home" style="--i:0" class="active   " > Inicio</a>
+                <a href="#about" style="--i:1"> nosotros</a>
+                <a href="#gallery" style="--i:2"> Galeria</a>
+                <a href="#service" style="--i:3"> Servicios</a>
+                <a href="#contact" style="--i:4"> Contactanos </a>
             </nav>
         </header>
+        <div class="text">
+            <h2 data-text="Huerta de la A a la Z"  >Huerta de la A a la Z</h2>
+            <h2  id="texto-maquina" >Huerta de la A a la Z</h2>
+        </div>
     </div>
+    <section id="home" >Inicio</section>
+    <section id="about" >nosotros</section>
+    <section id="gallery" >Galeria</section>
+    <section id="service" >Servicios</section>
+    <section id="contact" >Contactanos  </section>
+
+    
     
 
     <script>
             let menutoogle = document.querySelector(".menutoogle");
 let navigation = document.querySelector(".navigation");
+let navbar = document.querySelector(".navbar");
+const textoOriginal = "Huerta de la A a la Z ";
+    const elementoTexto = document.getElementById("texto-maquina");
+
 menutoogle.onclick = function(){
-    navigation.classList.toggle("active")
+    navigation.classList.toggle("active");
+    navbar.classList.toggle("active");
+    
+   
 }
+
+
+
+    function maquinaEscribir(texto, elemento, velocidad = 100) {
+      let i = 0;
+
+      function escribir() {
+        if (i < texto.length) {
+          elemento.textContent += texto.charAt(i);
+          i++;
+          setTimeout(escribir, velocidad);
+        } else {
+          // Reinicia la animación después de un breve retraso
+          setTimeout(() => {
+            elemento.textContent = "";
+            i = 0;
+            escribir();
+          }, 1000); // 1000 milisegundos (1 segundo) de retraso
+        }
+      }
+
+      escribir();
+    }
+
+    // Llamada inicial
+    maquinaEscribir(textoOriginal, elementoTexto);
+
+    // Código JavaScript para el desplazamiento suave
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        var elemento = document.getElementById('miElemento');
+
+        anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        elemento.classList.add('miClase');
+
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    let sections = document.querySelectorAll("section");
+let navLinks = document.querySelectorAll("header nav a");
+
+// Función para desplazarse suavemente hasta una sección
+function scrollToSection(targetSection) {
+    window.scrollTo({
+        top: targetSection.offsetTop , // Ajusta según sea necesario
+        behavior: "smooth"
+    });
+
+}
+
+// Función de manejo de clic en los enlaces de navegación
+function handleNavClick(event) {
+    event.preventDefault();
+    const targetId = this.getAttribute("href").substring(1); // Elimina el carácter '#' del href
+    const targetSection = document.getElementById(targetId);
+    
+    if (targetSection) {
+        scrollToSection(targetSection);
+    }
+}
+
+// Agrega el oyente de clic a cada enlace de navegación
+navLinks.forEach(link => {
+    link.addEventListener("click", handleNavClick);
+});
+
+// Manejador de desplazamiento al hacer clic en un enlace interno
+window.onscroll = () => {
+    sections.forEach(sec => {
+        let top = window.scrollY;
+        let offset = sec.offsetTop - 150;
+        let height = sec.offsetHeight;
+        let id = sec.getAttribute("id");
+
+        if (top >= offset && top < offset + height) {
+            navLinks.forEach(link => {
+                link.classList.toggle("active", link.getAttribute('href').includes(id));
+            });
+        }
+    });
+};
+
+
+
 
     </script>
 </body>

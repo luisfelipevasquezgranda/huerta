@@ -1,0 +1,16 @@
+
+section{
+
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #372b81;
+    font-size: 4em;
+    font-weight: 700;
+    
+}
+
+section:nth-child(odd){
+    background: red;
+}
